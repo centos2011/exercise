@@ -48,9 +48,6 @@ PER=`echo $((($USED*100)/$TOTAL_MEMORY))||cut -d. -f1`
 
 OUTPUT=`echo "Total Memory= $TOTAL_MEMORY MB", "Used= $USED MB"`
 
-echo $PER
-echo $WARN
-
 if [ $PER -lt $WARN ];
 then
     echo "OK - $OUTPUT"
@@ -58,8 +55,8 @@ then
 elif [[ $PER -ge $WARN && $PER -lt $CRIT ]];
 then
     echo "WARNING - $OUTPUT"
-    exit 1
+    exit $STATE_WARNING
 else
     echo "CRITICAL - $OUTPUT"
-    exit 2
+    exit $STATE_CRITICAL
 fi
