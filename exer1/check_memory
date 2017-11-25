@@ -61,6 +61,6 @@ then
        exit 1
 else
        echo "CRITICAL - $OUTPUT"
-       ps aux --sort -rss | head -10 | awk '{print $1, $2, $4, $11}' | mail -s  "`date +%Y%m%d` `date +%H:%M` memory check - critical"  $EMAIL
+       ps aux --sort -rss | head -11 | awk '{print $1, $2, $4, $11}' | mail -s  "`date +%Y%m%d` `date +%H:%M` memory check - critical"  $EMAIL
        exit 2
 fi
