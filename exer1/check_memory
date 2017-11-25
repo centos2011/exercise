@@ -28,6 +28,13 @@ do
     esac
 done
 
+FreeM=`free -m`
+TOTAL_MEMORY=`echo "$FreeM" |grep Mem |awk '{print $2}'`
+USED=`echo "$FreeM" |grep Mem |awk '{print $3}'`
+PER=`echo $((($USED*100)/$TOTAL_MEMORY))||cut -d. -f1`
+
+OUTPUT=`echo "Total Memory= $TOTAL_MEMORY MB", "Used= $USED MB"`
+
 if [[ -z $CRIT || -z $WARN ]];
 then
        echo "Must provide WARNING and CRITICAL values"
@@ -44,25 +51,16 @@ elif [[ -z $EMAIL   ]];
 then
        echo "Valid email address is required"
        help
-fi
-
-FreeM=`free -m`
-TOTAL_MEMORY=`echo "$FreeM" |grep Mem |awk '{print $2}'`
-USED=`echo "$FreeM" |grep Mem |awk '{print $3}'`
-PER=`echo $((($USED*100)/$TOTAL_MEMORY))||cut -d. -f1`
-
-OUTPUT=`echo "Total Memory= $TOTAL_MEMORY MB", "Used= $USED MB"`
-
-if [ $PER -lt $WARN ];
+elif [ $PER -lt $WARN ];
 then
-    echo "OK - $OUTPUT"
-    exit 0 
+       echo "OK - $OUTPUT"
+       exit 0
 elif [[ $PER -ge $WARN && $PER -lt $CRIT ]];
 then
-    echo "WARNING - $OUTPUT"
-    exit 1
+       echo "WARNING - $OUTPUT"
+       exit 1
 else
-    echo "CRITICAL - $OUTPUT"
-    ps aux --sort -rss | head -10 | awk '{print $1, $2, $4, $11}' | mail -s  "`date +%Y%m%d` `date +%H:%M` memory check - critical"  $EMAIL
-    exit 2 
+       echo "CRITICAL - $OUTPUT"
+       ps aux --sort -rss | head -10 | awk '{print $1, $2, $4, $11}' | mail -s  "`date +%Y%m%d` `date +%H:%M` memory check - critical"  $EMAIL
+       exit 2
 fi
