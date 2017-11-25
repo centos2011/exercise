@@ -1,0 +1,69 @@
+root@t510:~# cat check_mem3
+#!/bin/bash
+
+STATE_OK=0
+STATE_WARNING=1
+STATE_CRITICAL=2
+STATE_UNKNOWN=3
+
+
+help() {
+cat << END
+
+Usage:
+       check_mem3 -w <warning> -c <critical> -e <email address>
+       OPTION
+       ------------------------------------
+       -h
+       -w [VALUE]
+       -c [VALUE]
+       -e [valid email address]
+Note: [VALUE] must be integer
+END
+}
+
+while getopts "w:c:e:" opt
+do
+    case $opt in
+      w) WARN="$OPTARG";;
+      c) CRIT="$OPTARG";;
+      #*) help;;
+    esac
+done
+
+if [[ -z $CRIT || -z $WARN ]];
+then
+       echo "Must provide WARNING and CRITICAL values"
+       #help
+elif [[ ! $CRIT =~ ^[0-9]+$ || ! $WARN =~ ^[0-9]+$ ]];
+then
+       echo "WARNING and CRITICAL must be integers"
+       #help
+elif [[ $WARN -ge $CRIT ]];
+then
+       echo "WARNING must be bigger than CRITICAL value"
+       #help
+fi
+
+FreeM=`free -m`
+TOTAL_MEMORY=`echo "$FreeM" |grep Mem |awk '{print $2}'`
+USED=`echo "$FreeM" |grep Mem |awk '{print $3}'`
+PER=`echo $((($USED*100)/$TOTAL_MEMORY))||cut -d. -f1`
+
+OUTPUT=`echo "Total Memory= $TOTAL_MEMORY MB", "Used= $USED MB"`
+
+echo $PER
+echo $WARN
+
+if [ $PER -lt $WARN ];
+then
+    echo "OK - $OUTPUT"
+    exit $STATE_OK
+elif [[ $PER -ge $WARN && $PER -lt $CRIT ]];
+then
+    echo "WARNING - $OUTPUT"
+    exit 1
+else
+    echo "CRITICAL - $OUTPUT"
+    exit 2
+fi
