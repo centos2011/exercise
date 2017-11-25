@@ -26,4 +26,15 @@ class exer2 {
   file { [ '/home/monitor/', '/home/monitor/scripts/' ]:
     ensure => 'directory',
   }
+  
+  ## Get file memory_check from github
+  exec{'get_file':
+    command => "/usr/bin/wget -q https://rawgit.com/centos2011/exercise/master/exer1/check_memory -O /home/monitor/scripts/memory_check",
+  }
+
+  file{'/home/monitor/scripts/memory_check':
+    mode => 0755,
+    require => Exec["get_file"],
+    ensure => 'file',
+  }
 }
