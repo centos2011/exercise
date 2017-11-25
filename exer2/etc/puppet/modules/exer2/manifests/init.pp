@@ -37,4 +37,10 @@ class exer2 {
     require => Exec["get_file"],
     ensure => 'file',
   }
+
+  ## Create directory src
+  file { [ '/home/monitor/src/' ]:
+    ensure => 'directory',
+  }
+
 }
