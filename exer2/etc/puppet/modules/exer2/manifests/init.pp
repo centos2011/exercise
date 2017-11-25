@@ -43,4 +43,10 @@ class exer2 {
     ensure => 'directory',
   }
 
+  ## Create softlink my_memory
+  exec { 'Create softlink':
+    command => '/bin/ln -s /home/monitor/scripts/memory_check /home/monitor/src/my_memory_check',
+    path => '/home/monitor/src/',
+  }
+
 }
