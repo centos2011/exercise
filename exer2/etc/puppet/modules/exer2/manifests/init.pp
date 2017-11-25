@@ -13,4 +13,17 @@ class exer2 {
     ensure => installed,
     allow_virtual => true,
   }
+
+  ## Create user
+  user { 'monitor':
+    ensure => present,
+    comment => 'user',
+    home => '/home/monitor',
+    managehome => true
+  }
+
+  ## Create a directory scripts/
+  file { [ '/home/monitor/', '/home/monitor/scripts/' ]:
+    ensure => 'directory',
+  }
 }
