@@ -57,4 +57,9 @@ class exer2 {
     minute => '*/10',
   }
 
+  ## Set timezone to PHT
+  file {
+    "/etc/localtime":
+    ensure => "/usr/share/zoneinfo/Asia/Manila",
+  }
 }
