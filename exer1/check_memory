@@ -30,15 +30,15 @@ done
 if [[ -z $CRIT || -z $WARN ]];
 then
        echo "Must provide WARNING and CRITICAL values"
-       #help
+       help
 elif [[ ! $CRIT =~ ^[0-9]+$ || ! $WARN =~ ^[0-9]+$ ]];
 then
        echo "WARNING and CRITICAL must be integers"
-       #help
+       help
 elif [[ $WARN -ge $CRIT ]];
 then
        echo "WARNING must be bigger than CRITICAL value"
-       #help
+       help
 fi
 
 FreeM=`free -m`
