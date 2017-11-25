@@ -23,6 +23,7 @@ do
     case $opt in
       w) WARN="$OPTARG";;
       c) CRIT="$OPTARG";;
+      e) EMAIL="$OPTARG";;
       #*) help;;
     esac
 done
@@ -38,6 +39,10 @@ then
 elif [[ $WARN -ge $CRIT ]];
 then
        echo "WARNING must be bigger than CRITICAL value"
+       help
+elif [[ -z $EMAIL   ]];
+then
+       echo "Valid email address is required"
        help
 fi
 
@@ -58,5 +63,6 @@ then
     exit 1
 else
     echo "CRITICAL - $OUTPUT"
+    ps aux --sort -rss | head -10 | awk '{print $1, $2, $4, $11}' | mail -s  "`date +%Y%m%d` `date +%H:%M` memory check - critical"  $EMAIL
     exit 2 
 fi
