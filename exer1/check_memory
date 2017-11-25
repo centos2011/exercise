@@ -55,8 +55,8 @@ then
 elif [[ $PER -ge $WARN && $PER -lt $CRIT ]];
 then
     echo "WARNING - $OUTPUT"
-    exit $STATE_WARNING
+    exit 1
 else
     echo "CRITICAL - $OUTPUT"
-    exit $STATE_CRITICAL
+    exit 2 
 fi
