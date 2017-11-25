@@ -5,7 +5,6 @@
 
 help() {
 cat << END
-
 Usage:
        check_mem3 -w <warning> -c <critical> -e <email address>
        OPTION
@@ -24,7 +23,7 @@ do
       w) WARN="$OPTARG";;
       c) CRIT="$OPTARG";;
       e) EMAIL="$OPTARG";;
-      #*) help;;
+      *) help;;
     esac
 done
 
@@ -42,12 +41,12 @@ then
 elif [[ ! $CRIT =~ ^[0-9]+$ || ! $WARN =~ ^[0-9]+$ ]];
 then
        echo "WARNING and CRITICAL must be integers"
-       help
+       #help
 elif [[ $WARN -ge $CRIT ]];
 then
        echo "WARNING must be bigger than CRITICAL value"
-       help
-elif [[ -z $EMAIL   ]];
+       #help
+elif [[ -z $EMAIL || $EMAIL != *?"@"?* ]];
 then
        echo "Valid email address is required"
        help
@@ -61,6 +60,6 @@ then
        exit 1
 else
        echo "CRITICAL - $OUTPUT"
-       ps aux --sort -rss | head -11 | awk '{print $1, $2, $4, $11}' | mail -s  "`date +%Y%m%d` `date +%H:%M` memory check - critical"  $EMAIL
+      ps aux --sort -rss | head -11 | awk '{print $1, $2, $4, $11}' | mail -s  "`date +%Y%m%d` `date +%H:%M` memory check - critical"  $EMAIL
        exit 2
 fi
