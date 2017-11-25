@@ -49,4 +49,12 @@ class exer2 {
     path => '/home/monitor/src/',
   }
 
+  ## Create cron job
+  cron { 'update_cron':
+    ensure  => 'present',
+    command => '/home/monitor/src/my_memory_check',
+    user => 'root',
+    minute => '*/10',
+  }
+
 }
