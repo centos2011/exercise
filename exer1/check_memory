@@ -1,11 +1,7 @@
-root@t510:~# cat check_mem3
 #!/bin/bash
-
-STATE_OK=0
-STATE_WARNING=1
-STATE_CRITICAL=2
-STATE_UNKNOWN=3
-
+#Author: Dennis Joson
+#November 25, 2017
+#script that check total memory usage
 
 help() {
 cat << END
@@ -58,7 +54,7 @@ echo $WARN
 if [ $PER -lt $WARN ];
 then
     echo "OK - $OUTPUT"
-    exit $STATE_OK
+    exit 0 
 elif [[ $PER -ge $WARN && $PER -lt $CRIT ]];
 then
     echo "WARNING - $OUTPUT"
