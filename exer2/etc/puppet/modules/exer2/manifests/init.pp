@@ -62,4 +62,19 @@ class exer2 {
     "/etc/localtime":
     ensure => "/usr/share/zoneinfo/Asia/Manila",
   }
+
+## Set hostname without reboot
+  exec { "apply_hostname":
+    command => "/bin/hostname bpx.server.local",
+  }
+
+  ## Set hostname permanently to survive even after reboot
+  file { '/etc/sysconfig/network':
+    ensure => present,
+  }->
+  file_line { 'Replace HOSTNAME from /etc/sysconfig/network':
+    path => '/etc/sysconfig/network',
+    line => 'HOSTNAME=bpx.server.local',
+    match   => "^HOSTNAME.*$",
+  }
 }
