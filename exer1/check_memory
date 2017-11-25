@@ -1,4 +1,3 @@
-root@t510:~# cat check_mem3
 #!/bin/bash
 
 STATE_OK=0
