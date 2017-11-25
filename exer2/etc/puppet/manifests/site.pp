@@ -1,4 +1,4 @@
 node default {
-  #include stdlib
+  include stdlib
   include exer2
 }
