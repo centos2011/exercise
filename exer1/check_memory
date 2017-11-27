@@ -1,7 +1,7 @@
 #!/bin/bash
 #Author: Dennis Joson
 #November 25, 2017
-#script that check total memory usage
+#Script that check total memory usage
 
 help() {
 cat << END
