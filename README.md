@@ -1,1 +1,1 @@
-# This repo contains 2 exercise exam
+# This repo contains 2 exercises exam
